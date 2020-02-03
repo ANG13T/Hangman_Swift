@@ -11,13 +11,14 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet var guessWord: UILabel!
-   
+    @IBOutlet var guessesLabel: UILabel!
     
-    var words = ["dog", "zebra", "computer", "xcode", "flower", "snowman", "phone"]
+    var words = ["dog", "zebra", "computer", "xcode", "flower", "camel", "phone", "beach", "cloud", "desk", "heart", "water", "child", "kite", "field", "crayon"]
     var selectedWord = ""
     var tempWord = [String]()
     var displayWord = [String]()
     var containerWord = [String]()
+    var guesses = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,9 +46,20 @@ class ViewController: UIViewController {
     }
     
     func incorrect(){
-        let ac = UIAlertController(title: "Incorrect!", message: "Try again", preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .cancel))
-        present(ac, animated:true)
+        if(guesses == 0){
+            let gac = UIAlertController(title: "Game Over!", message: "Play Again?", preferredStyle: .alert)
+            gac.addAction(UIAlertAction(title: "OK", style: .default){ (action) in
+                self.genWord()
+            })
+            present(gac, animated: true)
+        }else{
+            let ac = UIAlertController(title: "Incorrect!", message: "Try again", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .cancel))
+            present(ac, animated:true)
+            guesses -= 1
+           guessesLabel.text? = "Guesses: \(guesses)"
+        }
+   
     }
     
     func correct(){
@@ -67,6 +79,8 @@ class ViewController: UIViewController {
     
     
     func genWord(){
+        guesses = 7
+        guessesLabel.text? = "Guesses: \(guesses)"
         displayWord.removeAll()
         containerWord.removeAll()
         
